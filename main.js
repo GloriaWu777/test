@@ -32,9 +32,7 @@ const renderer = new THREE.WebGL1Renderer();
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
-// renderer.setClearColor(new THREE.Color(0X000000));
 
-// const xxx = document.getElementById('xx')
 
 const geometry =  new THREE.BoxGeometry(1,1,1);
 const material = new THREE.MeshBasicMaterial({color:0x00ff00});
