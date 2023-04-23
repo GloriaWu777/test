@@ -2,6 +2,7 @@ import { readFile } from './readFile.js'
 // import { setupCustomObject } from './setupCustomObject.js'
 import * as THREE from 'three'
 import Stats from 'three/addons/libs/stats.module.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 // 全局变量声明
 let container,spotlight,camera,renderer,scene;
@@ -9,7 +10,18 @@ let mesh, mesh2;
 let sphere;
 let stats;
 
-init().then(animate);
+var step = 1;
+var num1 = 2;
+var num2 = 4;
+
+// init().then(animate());
+init();
+for(var i = 1; i<5;i++){
+    num2 += i;
+    
+}
+animate();
+// setInterval(animate, 2000);
 
 // init
 async function init(){
@@ -35,10 +47,12 @@ async function init(){
 
 
 // 几何体
-    const spheregeometry = new THREE.SphereGeometry(20, 16, 8)
-    const mat = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true})
+    const sphereGeometry = new THREE.SphereGeometry(150, 16, 8)
+    const mat = new THREE.MeshBasicMaterial({ color: 0x0000ff, wireframe: true})
 
-    sphere = new THREE.Mesh(spheregeometry, mat)
+    sphere = new THREE.Mesh(sphereGeometry, mat)
+
+    scene.add(sphere);
 
     mesh = new THREE.Mesh(
         new THREE.SphereGeometry(100, 16, 8),
@@ -70,8 +84,8 @@ async function init(){
     scene.add( particles );
 
 // 相机
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
-    camera.position.set( 200, 10, 1000 );
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
+    camera.position.set( 200, 100, 1000 );
     camera.lookAt( mesh.position );
 
     const cameraHelper = new THREE.CameraHelper(camera)
@@ -98,6 +112,7 @@ async function init(){
     stats.end()
 }
 
+    new OrbitControls(camera, renderer.domElement)
 // 调整窗口大小时 自适应比例尺寸
 function onResize(){
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -106,6 +121,7 @@ function onResize(){
     renderer.render(scene, camera)
 }
 
+
 // 球体动画
 function animate() {
     requestAnimationFrame(animate);
@@ -113,12 +129,23 @@ function animate() {
 //清除背景白色
     renderer.clear()
     // animating the cube
-    sphere.rotation.x += 0.01;
-    sphere.rotation.y += 0.01;
-    sphere.rotation.z += 0.02;
+    sphere.rotation.x += 0.005;
+    sphere.rotation.y += 0.005;
+    sphere.rotation.z += 0.008;
+    // sphere.position.x += 10;
+    // sphere.position.x -= 10;
 // console.log(Date.now() * 0.0005)
     renderer.render(scene, camera);
     stats.update()
+
+    step = num2/num1; 
+    var steps = step;
+    console.log("增大的倍数")
+    console.log(step)
+    sphere.scale.set(steps, steps, steps);
+    // const newSphere = new THREE.SphereGeometry(10, 16, 8);
+    // sphere.geometry.dispose();
+    // sphere.geometry = newSphere;
 }
 // animate();
 // 读取文件数据
